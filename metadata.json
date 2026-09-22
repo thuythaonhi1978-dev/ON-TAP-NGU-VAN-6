@@ -1,0 +1,6 @@
+{
+  "name": "Đấu Trường Ngữ Văn 6",
+  "description": "Ứng dụng ôn luyện và thi đấu tương tác môn Ngữ văn 6 - Học mà chơi, chơi mà học, chinh phục tri thức.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
