@@ -71,35 +71,35 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
   const activeLesson = TEXTBOOK_LESSONS.find((l) => l.id === selectedLessonId) || TEXTBOOK_LESSONS[0];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-7">
+    <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-6 space-y-4 sm:space-y-7 pb-20 sm:pb-8">
       {/* Top Banner & Mascot */}
-      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-3 text-center md:text-left">
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-blue-100 text-xs font-bold backdrop-blur-xs">
+      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-4 sm:p-7 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
+        <div className="space-y-2.5 sm:space-y-3 text-center md:text-left w-full">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 sm:gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/20 text-blue-100 text-[11px] sm:text-xs font-bold backdrop-blur-xs">
               <Trophy className="w-3.5 h-3.5 text-amber-300" />
               Đấu Trường Ngữ Văn 6
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/30 text-xs font-bold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/30 text-[11px] sm:text-xs font-bold">
               <BookCheck className="w-3.5 h-3.5 text-amber-300" />
-              Bộ SGK Kết Nối Tri Thức (Tập 1 & 2)
+              Kết Nối Tri Thức (Tập 1 & 2)
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <h2 className="text-xl sm:text-3xl font-black tracking-tight">
             Chào mừng {profile.name || 'Em'}!
           </h2>
-          <p className="text-xs sm:text-sm text-blue-100 max-w-xl leading-relaxed">
-            Học đến bài nào – Ôn luyện ngay bài đó! Chinh phục trọn vẹn 10 bài học trong sách giáo khoa Ngữ văn 6 với các thử thách tương tác hấp dẫn.
+          <p className="text-xs sm:text-sm text-blue-100 max-w-xl leading-relaxed mx-auto md:mx-0">
+            Học đến bài nào – Ôn luyện ngay bài đó! Chinh phục trọn vẹn 10 bài học trong sách giáo khoa với các thử thách tương tác hấp dẫn.
           </p>
 
-          <div className="pt-2 flex flex-wrap gap-2.5 justify-center md:justify-start">
+          <div className="pt-1.5 flex flex-col sm:flex-row flex-wrap gap-2 justify-center md:justify-start">
             <button
               onClick={() => {
                 SoundFX.playClick(soundEnabled);
                 onSelectZone('all', undefined, { lesson: activeLesson.id, semester: activeLesson.semester });
               }}
-              className="px-5 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-900 font-extrabold text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-5 py-3 sm:py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-900 font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 touch-action-manipulation min-h-[44px]"
             >
               <Play className="w-4 h-4 fill-slate-900 text-slate-900" />
               ÔN NGAY {activeLesson.title.toUpperCase()}
@@ -110,10 +110,10 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                 SoundFX.playClick(soundEnabled);
                 onOpenStudyGuide();
               }}
-              className="px-5 py-2.5 rounded-2xl bg-white/15 hover:bg-white/25 border border-white/30 text-white font-extrabold text-sm shadow-xs hover:shadow-md active:scale-95 transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-4 py-3 sm:py-2.5 rounded-2xl bg-white/15 hover:bg-white/25 border border-white/30 text-white font-extrabold text-xs sm:text-sm shadow-xs active:scale-95 transition-all flex items-center justify-center gap-2 touch-action-manipulation min-h-[44px]"
             >
               <Bookmark className="w-4 h-4 text-amber-300" />
-              CẨM NANG TRI THỨC 10 BÀI
+              CẨM NANG 10 BÀI
             </button>
 
             <button
@@ -121,7 +121,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                 SoundFX.playClick(soundEnabled);
                 onSelectZone('all');
               }}
-              className="px-4 py-2.5 rounded-2xl bg-indigo-950/40 hover:bg-indigo-950/60 border border-white/20 text-white font-bold text-xs shadow-xs active:scale-95 transition-all flex items-center gap-1.5"
+              className="w-full sm:w-auto px-3.5 py-2.5 rounded-2xl bg-indigo-950/40 hover:bg-indigo-950/60 border border-white/20 text-white font-bold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 touch-action-manipulation min-h-[40px]"
             >
               <Shuffle className="w-3.5 h-3.5 text-blue-300" />
               Thi Tổng Hợp (Cả Năm)
@@ -139,21 +139,22 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
       </div>
 
       {/* Primary Navigation Tabs: LỘ TRÌNH 10 BÀI SGK vs ĐẤU TRƯỜNG 4 KỸ NĂNG */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-2 rounded-2xl border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-white p-1.5 sm:p-2 rounded-2xl border border-slate-200 shadow-xs">
         <div className="flex w-full sm:w-auto p-1 bg-slate-100 rounded-xl">
           <button
             onClick={() => {
               SoundFX.playClick(soundEnabled);
               setNavMode('lessons');
             }}
-            className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 sm:flex-initial px-3 sm:px-4 py-2 rounded-lg font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 touch-action-manipulation ${
               navMode === 'lessons'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <BookMarked className="w-4 h-4" />
-            LỘ TRÌNH 10 BÀI SGK (BÀI 1 ➔ BÀI 10)
+            <BookMarked className="w-4 h-4 flex-shrink-0" />
+            <span className="sm:hidden">10 BÀI SGK</span>
+            <span className="hidden sm:inline">LỘ TRÌNH 10 BÀI SGK (BÀI 1 ➔ 10)</span>
           </button>
 
           <button
@@ -161,18 +162,19 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
               SoundFX.playClick(soundEnabled);
               setNavMode('zones');
             }}
-            className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 sm:flex-initial px-3 sm:px-4 py-2 rounded-lg font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 touch-action-manipulation ${
               navMode === 'zones'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Layers className="w-4 h-4" />
-            4 VÙNG ĐẤT KỸ NĂNG TỔNG HỢP
+            <Layers className="w-4 h-4 flex-shrink-0" />
+            <span className="sm:hidden">4 KỸ NĂNG</span>
+            <span className="hidden sm:inline">4 VÙNG ĐẤT KỸ NĂNG</span>
           </button>
         </div>
 
-        <div className="text-xs text-slate-500 font-medium px-2">
+        <div className="text-[11px] sm:text-xs text-slate-500 font-medium px-2 text-center sm:text-right">
           {navMode === 'lessons' ? '✨ Cấu trúc chuẩn theo từng bài học trên lớp' : '🎯 Luyện theo nhóm kĩ năng chuyên sâu'}
         </div>
       </div>
@@ -181,23 +183,23 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
       {/* MODE 1: LỘ TRÌNH TỪNG BÀI HỌC SGK (BÀI 1 -> BÀI 10)                      */}
       {/* ========================================================================= */}
       {navMode === 'lessons' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Semester Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-blue-50 to-indigo-50 p-3.5 sm:p-4 rounded-2xl border border-blue-100">
-            <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-blue-600" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 p-2.5 sm:p-4 rounded-2xl border border-blue-100">
+            <div className="flex items-center gap-1.5 px-1">
+              <Filter className="w-4 h-4 text-blue-600 flex-shrink-0" />
               <span className="text-xs sm:text-sm font-extrabold text-slate-800">
-                Lọc theo Tập Sách Giáo Khoa:
+                Tập Sách Giáo Khoa:
               </span>
             </div>
 
-            <div className="inline-flex rounded-xl bg-white p-1 text-xs font-bold border border-blue-200/80 shadow-xs">
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar rounded-xl bg-white p-1 text-xs font-bold border border-blue-200/80 shadow-xs">
               <button
                 onClick={() => {
                   SoundFX.playClick(soundEnabled);
                   setSemesterFilter('all');
                 }}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all whitespace-nowrap min-h-[36px] touch-action-manipulation ${
                   semesterFilter === 'all'
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -211,7 +213,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                   setSemesterFilter(1);
                   if (selectedLessonId > 5) setSelectedLessonId(1);
                 }}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all whitespace-nowrap min-h-[36px] touch-action-manipulation ${
                   semesterFilter === 1
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -225,7 +227,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                   setSemesterFilter(2);
                   if (selectedLessonId <= 5) setSelectedLessonId(6);
                 }}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all whitespace-nowrap min-h-[36px] touch-action-manipulation ${
                   semesterFilter === 2
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -238,15 +240,15 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
 
           {/* Horizontal / Grid Lesson Carousel Selector */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-500" />
-                Chọn Bài Học Em Đang Học Trên Lớp:
+            <div className="flex items-center justify-between mb-2 sm:mb-3 px-1">
+              <h3 className="text-xs sm:text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500" />
+                Chọn Bài Học Đang Học Trên Lớp:
               </h3>
-              <span className="text-xs text-slate-500">Bấm vào bài để mở trạm ôn luyện</span>
+              <span className="text-[11px] sm:text-xs text-slate-500 hidden sm:inline">Bấm vào bài để mở trạm ôn luyện</span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
               {filteredLessons.map((l) => {
                 const isSelected = selectedLessonId === l.id;
                 const isSem1 = l.semester === 1;
@@ -254,40 +256,40 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                 return (
                   <motion.div
                     key={l.id}
-                    whileHover={{ y: -3 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => {
                       SoundFX.playClick(soundEnabled);
                       setSelectedLessonId(l.id);
                     }}
-                    className={`p-3.5 rounded-2xl cursor-pointer border-2 transition-all relative flex flex-col justify-between ${
+                    className={`p-2.5 sm:p-3.5 rounded-2xl cursor-pointer border-2 transition-all relative flex flex-col justify-between touch-action-manipulation select-none min-h-[96px] sm:min-h-[110px] ${
                       isSelected
-                        ? 'border-blue-600 bg-blue-50/50 shadow-md ring-3 ring-blue-100'
+                        ? 'border-blue-600 bg-blue-50/70 shadow-md ring-2 sm:ring-3 ring-blue-100'
                         : 'border-slate-200 bg-white hover:border-slate-300 shadow-xs'
                     }`}
                   >
                     <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
+                      <div className="flex items-center justify-between mb-1">
+                        <span className={`text-[9px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-md ${
                           isSem1 ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-800'
                         }`}>
                           Tập {l.semester}
                         </span>
-                        <span className="text-[11px] font-extrabold text-blue-600">
+                        <span className="text-[10px] sm:text-[11px] font-black text-blue-600">
                           Bài {l.id}
                         </span>
                       </div>
 
-                      <h4 className="font-extrabold text-slate-900 text-xs sm:text-sm line-clamp-1 mb-1">
+                      <h4 className="font-extrabold text-slate-900 text-xs sm:text-sm line-clamp-1 mb-0.5">
                         {l.title.replace(`Bài ${l.id}: `, '')}
                       </h4>
-                      <p className="text-[11px] text-slate-500 line-clamp-1">
+                      <p className="text-[10px] sm:text-[11px] text-slate-500 line-clamp-1">
                         {l.genre}
                       </p>
                     </div>
 
-                    <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                      <span className="text-slate-400 font-medium">4 trạm ôn</span>
+                    <div className="mt-1.5 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] sm:text-[11px]">
+                      <span className="text-slate-400 font-medium">4 trạm</span>
                       <span className={`font-bold flex items-center gap-0.5 ${isSelected ? 'text-blue-600' : 'text-slate-500'}`}>
                         {isSelected ? 'Đang chọn' : 'Xem'} <ChevronRight className="w-3 h-3" />
                       </span>
@@ -301,52 +303,52 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
           {/* ACTIVE LESSON MISSION CONTROL */}
           <motion.div
             key={activeLesson.id}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl p-5 sm:p-7 border-2 border-blue-500 shadow-lg space-y-6"
+            className="bg-white rounded-3xl p-4 sm:p-7 border-2 border-blue-500 shadow-lg space-y-4 sm:space-y-6"
           >
             {/* Mission Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
-              <div className="space-y-1.5">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-5 border-b border-slate-100">
+              <div className="space-y-1.5 text-center md:text-left">
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 sm:gap-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-black ${
                     activeLesson.semester === 1 ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-800'
                   }`}>
-                    📘 SÁCH GIÁO KHOA TẬP {activeLesson.semester}
+                    📘 SGK TẬP {activeLesson.semester}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 text-xs font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[11px] sm:text-xs font-bold">
                     {activeLesson.genre}
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-black text-slate-900">
+                <h3 className="text-xl sm:text-3xl font-black text-slate-900 leading-tight">
                   {activeLesson.title}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-                  <span className="font-bold text-slate-700">Chủ đề bài học:</span> {activeLesson.theme}
+                  <span className="font-bold text-slate-700">Chủ đề:</span> {activeLesson.theme}
                 </p>
               </div>
 
               {/* Mega Start Button for this Lesson */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 w-full sm:w-auto">
                 <button
                   onClick={() => {
                     SoundFX.playClick(soundEnabled);
                     onSelectZone('all', undefined, { semester: activeLesson.semester, lesson: activeLesson.id });
                   }}
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-black text-sm sm:text-base shadow-lg shadow-blue-500/25 active:scale-95 transition-all flex items-center justify-center gap-2.5 group"
+                  className="w-full sm:w-auto px-5 sm:px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-black text-xs sm:text-base shadow-lg shadow-blue-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 group min-h-[48px] touch-action-manipulation"
                 >
-                  <Play className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" />
-                  VÀO ĐẤU TRƯỜNG TOÀN DIỆN BÀI {activeLesson.id} (10 CÂU)
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-white group-hover:scale-110 transition-transform" />
+                  <span>VÀO ĐẤU TRƯỜNG BÀI {activeLesson.id} (10 CÂU)</span>
                 </button>
               </div>
             </div>
 
             {/* Content Breakdown Box */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3.5 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200 text-xs">
               <div className="space-y-1">
                 <div className="font-extrabold text-blue-700 flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5" />
+                  <BookOpen className="w-3.5 h-3.5 flex-shrink-0" />
                   VĂN BẢN ĐỌC HIỂU:
                 </div>
                 <ul className="text-slate-600 space-y-0.5 list-disc list-inside">
@@ -358,7 +360,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
 
               <div className="space-y-1">
                 <div className="font-extrabold text-emerald-700 flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5" />
+                  <Compass className="w-3.5 h-3.5 flex-shrink-0" />
                   KIẾN THỨC TIẾNG VIỆT:
                 </div>
                 <ul className="text-slate-600 space-y-0.5 list-disc list-inside">
@@ -370,7 +372,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
 
               <div className="space-y-1">
                 <div className="font-extrabold text-amber-700 flex items-center gap-1.5">
-                  <Feather className="w-3.5 h-3.5" />
+                  <Feather className="w-3.5 h-3.5 flex-shrink-0" />
                   KỸ NĂNG VIẾT & NÓI:
                 </div>
                 <p className="text-slate-600 line-clamp-2">
@@ -383,24 +385,24 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
             </div>
 
             {/* Specialized Stations for this Lesson */}
-            <div className="space-y-3">
-              <h4 className="text-xs sm:text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                <Flame className="w-4 h-4 text-orange-500" />
-                Hoặc Chọn Trạm Ôn Chuyên Đề Của Bài {activeLesson.id}:
+            <div className="space-y-2.5 sm:space-y-3">
+              <h4 className="text-xs sm:text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <Flame className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                Hoặc Chọn Trạm Ôn Chuyên Đề Bài {activeLesson.id}:
               </h4>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3.5">
                 {/* Station 1: Văn bản */}
-                <div className="p-4 rounded-2xl border border-blue-200 bg-blue-50/40 hover:bg-blue-50 hover:border-blue-400 transition-all flex flex-col justify-between">
+                <div className="p-3.5 sm:p-4 rounded-2xl border border-blue-200 bg-blue-50/40 hover:bg-blue-50 hover:border-blue-400 transition-all flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-2 mb-2 text-blue-700">
-                      <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center">
-                        <BookOpen className="w-4 h-4" />
+                    <div className="flex items-center gap-2 mb-1.5 text-blue-700">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                        <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <span className="font-extrabold text-xs uppercase">Trạm Đọc Hiểu</span>
                     </div>
                     <p className="text-xs text-slate-600 line-clamp-2">
-                      Ôn các câu hỏi về tác giả, cốt truyện, nhân vật và ý nghĩa văn bản bài {activeLesson.id}.
+                      Ôn tác giả, cốt truyện, nhân vật và ý nghĩa văn bản bài {activeLesson.id}.
                     </p>
                   </div>
                   <button
@@ -408,7 +410,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                       SoundFX.playClick(soundEnabled);
                       onSelectZone('kham_pha_van_ban', undefined, { semester: activeLesson.semester, lesson: activeLesson.id });
                     }}
-                    className="mt-3.5 w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                    className="mt-3 w-full min-h-[40px] py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all touch-action-manipulation"
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
                     Chơi Trạm Văn Bản
@@ -416,16 +418,16 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                 </div>
 
                 {/* Station 2: Tiếng Việt */}
-                <div className="p-4 rounded-2xl border border-emerald-200 bg-emerald-50/40 hover:bg-emerald-50 hover:border-emerald-400 transition-all flex flex-col justify-between">
+                <div className="p-3.5 sm:p-4 rounded-2xl border border-emerald-200 bg-emerald-50/40 hover:bg-emerald-50 hover:border-emerald-400 transition-all flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-2 mb-2 text-emerald-700">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center">
-                        <Compass className="w-4 h-4" />
+                    <div className="flex items-center gap-2 mb-1.5 text-emerald-700">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
+                        <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <span className="font-extrabold text-xs uppercase">Trạm Tiếng Việt</span>
                     </div>
                     <p className="text-xs text-slate-600 line-clamp-2">
-                      Ôn từ ngữ, ngữ pháp, biện pháp tu từ và dấu câu của bài {activeLesson.id}.
+                      Ôn từ ngữ, ngữ pháp, biện pháp tu từ và dấu câu bài {activeLesson.id}.
                     </p>
                   </div>
                   <button
@@ -433,7 +435,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                       SoundFX.playClick(soundEnabled);
                       onSelectZone('tham_hiem_tieng_viet', undefined, { semester: activeLesson.semester, lesson: activeLesson.id });
                     }}
-                    className="mt-3.5 w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                    className="mt-3 w-full min-h-[40px] py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all touch-action-manipulation"
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
                     Chơi Trạm Tiếng Việt
@@ -441,16 +443,16 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                 </div>
 
                 {/* Station 3: Viết & Nói nghe */}
-                <div className="p-4 rounded-2xl border border-amber-200 bg-amber-50/40 hover:bg-amber-50 hover:border-amber-400 transition-all flex flex-col justify-between">
+                <div className="p-3.5 sm:p-4 rounded-2xl border border-amber-200 bg-amber-50/40 hover:bg-amber-50 hover:border-amber-400 transition-all flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-2 mb-2 text-amber-700">
-                      <div className="w-8 h-8 rounded-xl bg-amber-600 text-white flex items-center justify-center">
-                        <Feather className="w-4 h-4" />
+                    <div className="flex items-center gap-2 mb-1.5 text-amber-700">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-600 text-white flex items-center justify-center flex-shrink-0">
+                        <Feather className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <span className="font-extrabold text-xs uppercase">Trạm Viết & Nói</span>
                     </div>
                     <p className="text-xs text-slate-600 line-clamp-2">
-                      Ôn quy trình làm văn, lập dàn ý, cách mở bài kết bài và kĩ năng thuyết trình.
+                      Ôn quy trình làm văn, lập dàn ý, mở kết bài và kĩ năng thuyết trình.
                     </p>
                   </div>
                   <button
@@ -458,7 +460,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                       SoundFX.playClick(soundEnabled);
                       onSelectZone('xuong_viet_sang_tao', undefined, { semester: activeLesson.semester, lesson: activeLesson.id });
                     }}
-                    className="mt-3.5 w-full py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                    className="mt-3 w-full min-h-[40px] py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all touch-action-manipulation"
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
                     Chơi Trạm Viết & Nói
@@ -468,12 +470,12 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
             </div>
 
             {/* 4 Cognitive Levels for this Lesson */}
-            <div className="pt-2">
-              <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2.5">
-                Hoặc Chọn Thử Thách Theo Cấp Độ Nhận Thức Của Bài {activeLesson.id}:
+            <div className="pt-1 sm:pt-2">
+              <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">
+                Hoặc Chọn Thử Thách Cấp Độ Của Bài {activeLesson.id}:
               </h4>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
                 {levelsList.map((lvl) => {
                   const lvlInfo = COGNITIVE_LEVELS[lvl];
                   return (
@@ -483,15 +485,15 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
                         SoundFX.playClick(soundEnabled);
                         onSelectZone('all', lvl, { semester: activeLesson.semester, lesson: activeLesson.id });
                       }}
-                      className="p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 text-left transition-all group"
+                      className="p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 text-left transition-all group touch-action-manipulation active:scale-[0.98] min-h-[56px]"
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className={`text-[11px] font-black px-2 py-0.5 rounded-md ${lvlInfo.color}`}>
+                        <span className={`text-[10px] sm:text-[11px] font-black px-1.5 sm:px-2 py-0.5 rounded-md ${lvlInfo.color}`}>
                           {lvlInfo.name}
                         </span>
-                        <span className="text-[11px] font-bold text-slate-500">+{lvlInfo.points}đ</span>
+                        <span className="text-[10px] sm:text-[11px] font-bold text-slate-500">+{lvlInfo.points}đ</span>
                       </div>
-                      <span className="text-[11px] text-blue-600 font-bold group-hover:underline flex items-center gap-1">
+                      <span className="text-[10px] sm:text-[11px] text-blue-600 font-bold group-hover:underline flex items-center gap-1">
                         Bắt đầu <ArrowRight className="w-3 h-3" />
                       </span>
                     </button>
@@ -668,6 +670,50 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({
           </motion.div>
         </div>
       )}
+
+      {/* Floating Bottom Quick Action Bar for Smartphones */}
+      <div className="fixed bottom-0 left-0 right-0 sm:hidden z-30 bg-white/95 backdrop-blur-md border-t border-slate-200/90 px-3 py-2 pb-safe shadow-lg flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] text-slate-500 font-bold uppercase truncate">
+            {navMode === 'lessons' ? 'Bài đang chọn:' : 'Khu vực:'}
+          </div>
+          <div className="text-xs font-black text-slate-900 truncate">
+            {navMode === 'lessons' 
+              ? `${activeLesson.title}`
+              : `${activeZoneConfig.name}`
+            }
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <button
+            onClick={() => {
+              SoundFX.playClick(soundEnabled);
+              onOpenStudyGuide();
+            }}
+            className="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 text-xs font-bold flex items-center gap-1 min-h-[40px] touch-action-manipulation"
+            title="Mở Cẩm nang 10 bài SGK"
+          >
+            <Bookmark className="w-3.5 h-3.5 text-amber-500" />
+            <span className="text-[11px]">Cẩm nang</span>
+          </button>
+
+          <button
+            onClick={() => {
+              SoundFX.playClick(soundEnabled);
+              if (navMode === 'lessons') {
+                onSelectZone('all', undefined, { semester: activeLesson.semester, lesson: activeLesson.id });
+              } else {
+                onSelectZone(selectedZone);
+              }
+            }}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-xs font-black flex items-center gap-1.5 shadow-md shadow-blue-500/25 active:scale-95 min-h-[40px] touch-action-manipulation"
+          >
+            <Play className="w-3.5 h-3.5 fill-white" />
+            <span>Vào thi ngay</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

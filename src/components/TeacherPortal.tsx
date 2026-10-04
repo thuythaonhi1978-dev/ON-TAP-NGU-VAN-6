@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   Shield, 
@@ -22,12 +22,46 @@ import {
   ToggleRight,
   Filter,
   Eye,
-  EyeOff
+  EyeOff,
+  CalendarCheck,
+  Trophy,
+  Sparkles,
+  Layers,
+  History
 } from 'lucide-react';
-import { Question, TeacherSettings, QuizResult, ZoneId, CognitiveLevel, GameType } from '../types';
+import { 
+  Question, 
+  TeacherSettings, 
+  QuizResult, 
+  ZoneId, 
+  CognitiveLevel, 
+  GameType,
+  ClassroomStudent,
+  AttendanceRecord,
+  PointHistoryItem,
+  SavedGroupResult
+} from '../types';
 import { ZONE_CONFIG, COGNITIVE_LEVELS } from '../data/defaultQuestions';
 import { TEXTBOOK_LESSONS } from '../data/lessonsData';
 import { SoundFX } from '../utils/sound';
+
+import { StudentManagementTab } from './classroom/StudentManagementTab';
+import { AttendanceTab } from './classroom/AttendanceTab';
+import { MeritLeaderboardTab } from './classroom/MeritLeaderboardTab';
+import { LuckyWheelTab } from './classroom/LuckyWheelTab';
+import { GroupDividerTab } from './classroom/GroupDividerTab';
+import { DataExportTab } from './classroom/DataExportTab';
+
+export type TeacherPortalTab = 
+  | 'students' 
+  | 'attendance' 
+  | 'merit' 
+  | 'wheel' 
+  | 'groups' 
+  | 'export' 
+  | 'questions' 
+  | 'history' 
+  | 'settings';
 
 interface TeacherPortalProps {
   isOpen: boolean;
@@ -41,6 +75,26 @@ interface TeacherPortalProps {
   onDeleteHistoryItem: (id: string) => void;
   onClearHistory: () => void;
   soundEnabled: boolean;
+
+  // Classroom Management Props
+  initialTab?: TeacherPortalTab;
+  classroomStudents: ClassroomStudent[];
+  classes: string[];
+  currentClass: string;
+  pointHistory: PointHistoryItem[];
+  savedGroups: Record<string, SavedGroupResult>;
+  onChangeClass: (className: string) => void;
+  onAddClass: (className: string) => void;
+  onAddStudent: (student: Omit<ClassroomStudent, 'id'>) => boolean;
+  onUpdateStudent: (student: ClassroomStudent) => boolean;
+  onDeleteStudent: (id: string) => void;
+  onBatchAddStudents: (names: string[], className: string) => number;
+  getAttendanceRecord: (className: string, date: string) => AttendanceRecord | null;
+  onSaveAttendanceRecord: (record: AttendanceRecord) => boolean;
+  onUpdateStudentPoints: (studentId: string, newPoints: number, change: number, reason: string) => void;
+  onUpdateGroupPoints: (groupNumber: number, change: number, reason: string) => void;
+  onResetClassPoints: (className: string) => void;
+  onSaveGroupResult: (result: SavedGroupResult) => boolean;
 }
 
 export const TeacherPortal: React.FC<TeacherPortalProps> = ({
@@ -54,12 +108,37 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
   onResetQuestions,
   onDeleteHistoryItem,
   onClearHistory,
-  soundEnabled
+  soundEnabled,
+
+  initialTab = 'students',
+  classroomStudents,
+  classes,
+  currentClass,
+  pointHistory,
+  savedGroups,
+  onChangeClass,
+  onAddClass,
+  onAddStudent,
+  onUpdateStudent,
+  onDeleteStudent,
+  onBatchAddStudents,
+  getAttendanceRecord,
+  onSaveAttendanceRecord,
+  onUpdateStudentPoints,
+  onUpdateGroupPoints,
+  onResetClassPoints,
+  onSaveGroupResult
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [enteredPassword, setEnteredPassword] = useState('');
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'questions' | 'settings' | 'history'>('questions');
+  const [activeTab, setActiveTab] = useState<TeacherPortalTab>(initialTab);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab, isOpen]);
 
   // Filter questions states
   const [filterZone, setFilterZone] = useState<string>('all');
@@ -231,26 +310,27 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-5xl my-6 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+      <div className="relative w-full max-w-5xl my-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[95vh] max-h-[95dvh]">
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 text-white flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-white/20 rounded-xl">
-              <Shield className="w-6 h-6 text-amber-300" />
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 text-white flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <div className="p-1.5 sm:p-2 bg-white/20 rounded-xl flex-shrink-0">
+              <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300" />
             </div>
-            <div>
-              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight">
+            <div className="min-w-0">
+              <h2 className="text-base sm:text-xl font-extrabold tracking-tight truncate">
                 Không Gian Dành Cho Giáo Viên
               </h2>
-              <p className="text-xs text-purple-100 font-medium">
-                Quản lí ngân hàng câu hỏi, tùy biến đề thi và theo dõi tiến độ học sinh
+              <p className="text-[10px] sm:text-xs text-purple-100 font-medium truncate">
+                Quản lí câu hỏi, tùy biến đề thi và theo dõi học sinh
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-colors"
+            className="min-w-[36px] min-h-[36px] p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-colors flex items-center justify-center flex-shrink-0 touch-action-manipulation"
+            aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>
@@ -258,15 +338,15 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
 
         {/* Authentication Gate */}
         {!isAuthenticated ? (
-          <div className="p-8 sm:p-12 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center mb-2">
-              <Lock className="w-8 h-8" />
+          <div className="p-6 sm:p-12 flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center mb-1 sm:mb-2">
+              <Lock className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
-            <h3 className="text-xl font-extrabold text-slate-900">
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">
               Nhập Mật Khẩu Giáo Viên
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 max-w-sm">
-              Khu vực bảo mật dành cho giáo viên biên soạn câu hỏi và thiết lập thông số. Mật khẩu mặc định là <strong>123456</strong>.
+              Khu vực bảo mật dành cho giáo viên biên soạn câu hỏi. Mật khẩu mặc định là <strong>123456</strong>.
             </p>
 
             <form onSubmit={handleLogin} className="w-full max-w-xs space-y-3 pt-2">
@@ -275,12 +355,13 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
                 value={enteredPassword}
                 onChange={(e) => setEnteredPassword(e.target.value)}
                 placeholder="Nhập mật khẩu..."
-                className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 focus:bg-white focus:border-purple-500 focus:ring-4 focus:ring-purple-100 text-center font-bold text-slate-800 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 focus:bg-white focus:border-purple-500 focus:ring-4 focus:ring-purple-100 text-center font-bold text-slate-800 outline-none transition-all text-base min-h-[48px]"
+                autoComplete="current-password"
               />
               {authError && <p className="text-xs font-semibold text-rose-600">{authError}</p>}
               <button
                 type="submit"
-                className="w-full py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-extrabold text-sm shadow-md transition-all"
+                className="w-full py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-extrabold text-sm shadow-md transition-all min-h-[44px] touch-action-manipulation"
               >
                 Đăng Nhập
               </button>
@@ -290,43 +371,237 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
           /* Authenticated Teacher Workspace */
           <div className="flex-1 flex flex-col overflow-hidden">
             {/* Nav Tabs */}
-            <div className="px-6 py-2 bg-slate-100/80 border-b border-slate-200 flex flex-wrap gap-2 text-xs font-bold">
+            <div className="px-2 sm:px-6 py-2 bg-slate-100/90 border-b border-slate-200 flex overflow-x-auto no-scrollbar gap-1 sm:gap-1.5 text-xs font-bold flex-shrink-0">
               <button
-                onClick={() => setActiveTab('questions')}
-                className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('students');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
+                  activeTab === 'students'
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
+                }`}
+              >
+                <Users className="w-4 h-4 flex-shrink-0" />
+                <span>Học Sinh</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('attendance');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
+                  activeTab === 'attendance'
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
+                }`}
+              >
+                <CalendarCheck className="w-4 h-4 flex-shrink-0" />
+                <span>Điểm Danh</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('merit');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
+                  activeTab === 'merit'
+                    ? 'bg-amber-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
+                }`}
+              >
+                <Trophy className="w-4 h-4 flex-shrink-0" />
+                <span>Thi Đua</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('wheel');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
+                  activeTab === 'wheel'
+                    ? 'bg-purple-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
+                }`}
+              >
+                <Sparkles className="w-4 h-4 flex-shrink-0" />
+                <span>Vòng Quay</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('groups');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
+                  activeTab === 'groups'
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
+                }`}
+              >
+                <Layers className="w-4 h-4 flex-shrink-0" />
+                <span>Chia Nhóm</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('export');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
+                  activeTab === 'export'
+                    ? 'bg-teal-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
+                }`}
+              >
+                <FileSpreadsheet className="w-4 h-4 flex-shrink-0" />
+                <span>Xuất File</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('questions');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
                   activeTab === 'questions'
-                    ? 'bg-white text-purple-700 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-slate-800 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
                 }`}
               >
-                <Database className="w-4 h-4" />
-                Ngân Hàng Câu Hỏi ({questions.length})
+                <Database className="w-4 h-4 flex-shrink-0" />
+                <span>Đề SGK ({questions.length})</span>
               </button>
 
               <button
-                onClick={() => setActiveTab('history')}
-                className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('history');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
                   activeTab === 'history'
-                    ? 'bg-white text-purple-700 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-slate-800 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
                 }`}
               >
-                <Users className="w-4 h-4" />
-                Kết Quả Học Sinh ({history.length})
+                <History className="w-4 h-4 flex-shrink-0" />
+                <span>Lịch Sử Thi</span>
               </button>
 
               <button
-                onClick={() => setActiveTab('settings')}
-                className={`px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                onClick={() => {
+                  SoundFX.playClick(soundEnabled);
+                  setActiveTab('settings');
+                }}
+                className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap min-h-[38px] ${
                   activeTab === 'settings'
-                    ? 'bg-white text-purple-700 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-slate-800 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 bg-white/60 hover:bg-white'
                 }`}
               >
-                <Settings className="w-4 h-4" />
-                Cài Đặt Đề Thi & Ứng Dụng
+                <Settings className="w-4 h-4 flex-shrink-0" />
+                <span>Cài Đặt</span>
               </button>
             </div>
+
+            {/* Tab: Quản lý học sinh */}
+            {activeTab === 'students' && (
+              <div className="p-3 sm:p-6 overflow-y-auto">
+                <StudentManagementTab
+                  students={classroomStudents}
+                  classes={classes}
+                  currentClass={currentClass}
+                  onChangeClass={onChangeClass}
+                  onAddClass={onAddClass}
+                  onAddStudent={onAddStudent}
+                  onUpdateStudent={onUpdateStudent}
+                  onDeleteStudent={onDeleteStudent}
+                  onBatchAddStudents={onBatchAddStudents}
+                  soundEnabled={soundEnabled}
+                />
+              </div>
+            )}
+
+            {/* Tab: Điểm danh */}
+            {activeTab === 'attendance' && (
+              <div className="p-3 sm:p-6 overflow-y-auto">
+                <AttendanceTab
+                  students={classroomStudents}
+                  classes={classes}
+                  currentClass={currentClass}
+                  onChangeClass={onChangeClass}
+                  getAttendanceRecord={getAttendanceRecord}
+                  onSaveAttendanceRecord={onSaveAttendanceRecord}
+                  soundEnabled={soundEnabled}
+                />
+              </div>
+            )}
+
+            {/* Tab: Điểm thi đua */}
+            {activeTab === 'merit' && (
+              <div className="p-3 sm:p-6 overflow-y-auto">
+                <MeritLeaderboardTab
+                  students={classroomStudents}
+                  classes={classes}
+                  currentClass={currentClass}
+                  onChangeClass={onChangeClass}
+                  pointHistory={pointHistory}
+                  onUpdateStudentPoints={onUpdateStudentPoints}
+                  onUpdateGroupPoints={onUpdateGroupPoints}
+                  onResetClassPoints={onResetClassPoints}
+                  soundEnabled={soundEnabled}
+                />
+              </div>
+            )}
+
+            {/* Tab: Vòng quay gọi tên */}
+            {activeTab === 'wheel' && (
+              <div className="p-3 sm:p-6 overflow-y-auto">
+                <LuckyWheelTab
+                  students={classroomStudents}
+                  classes={classes}
+                  currentClass={currentClass}
+                  onChangeClass={onChangeClass}
+                  soundEnabled={soundEnabled}
+                />
+              </div>
+            )}
+
+            {/* Tab: Chia nhóm */}
+            {activeTab === 'groups' && (
+              <div className="p-3 sm:p-6 overflow-y-auto">
+                <GroupDividerTab
+                  students={classroomStudents}
+                  classes={classes}
+                  currentClass={currentClass}
+                  onChangeClass={onChangeClass}
+                  savedGroups={savedGroups}
+                  onSaveGroupResult={onSaveGroupResult}
+                  soundEnabled={soundEnabled}
+                />
+              </div>
+            )}
+
+            {/* Tab: Xuất dữ liệu */}
+            {activeTab === 'export' && (
+              <div className="p-3 sm:p-6 overflow-y-auto">
+                <DataExportTab
+                  students={classroomStudents}
+                  classes={classes}
+                  currentClass={currentClass}
+                  onChangeClass={onChangeClass}
+                  getAttendanceRecord={getAttendanceRecord}
+                  pointHistory={pointHistory}
+                  savedGroups={savedGroups}
+                  quizHistory={history}
+                  soundEnabled={soundEnabled}
+                />
+              </div>
+            )}
 
             {/* Tab 1: Questions Management */}
             {activeTab === 'questions' && (

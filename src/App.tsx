@@ -6,7 +6,11 @@ import {
   QuizResult, 
   AnswerRecord, 
   ZoneId, 
-  CognitiveLevel 
+  CognitiveLevel,
+  ClassroomStudent,
+  AttendanceRecord,
+  PointHistoryItem,
+  SavedGroupResult
 } from './types';
 import { 
   DEFAULT_QUESTIONS, 
@@ -20,7 +24,7 @@ import { JourneyMap } from './components/JourneyMap';
 import { QuizArena } from './components/QuizArena';
 import { ResultReport } from './components/ResultReport';
 import { InstructionsModal } from './components/InstructionsModal';
-import { TeacherPortal } from './components/TeacherPortal';
+import { TeacherPortal, TeacherPortalTab } from './components/TeacherPortal';
 import { StudyGuideModal } from './components/StudyGuideModal';
 import { SoundFX } from './utils/sound';
 
@@ -32,6 +36,17 @@ export default function App() {
   const [settings, setSettings] = useState<TeacherSettings>(() => StorageManager.getSettings());
   const [questions, setQuestions] = useState<Question[]>(() => StorageManager.getQuestions());
   const [history, setHistory] = useState<QuizResult[]>(() => StorageManager.getHistory());
+
+  // Classroom Management State
+  const [classroomStudents, setClassroomStudents] = useState<ClassroomStudent[]>(() => StorageManager.getClassroomStudents());
+  const [classroomClasses, setClassroomClasses] = useState<string[]>(() => StorageManager.getClasses());
+  const [currentClass, setCurrentClass] = useState<string>(() => {
+    const list = StorageManager.getClasses();
+    return list[0] || '6A1';
+  });
+  const [pointHistory, setPointHistory] = useState<PointHistoryItem[]>(() => StorageManager.getPointHistory());
+  const [savedGroups, setSavedGroups] = useState<Record<string, SavedGroupResult>>(() => StorageManager.getSavedGroups());
+  const [teacherPortalInitialTab, setTeacherPortalInitialTab] = useState<TeacherPortalTab>('students');
 
   // UI Navigation State
   const [currentView, setCurrentView] = useState<ViewMode>('start');
@@ -64,6 +79,168 @@ export default function App() {
   useEffect(() => {
     StorageManager.saveHistory(history);
   }, [history]);
+
+  // Open Teacher Portal to a specific tab
+  const handleOpenTeacherPortal = (tab: TeacherPortalTab = 'students') => {
+    setTeacherPortalInitialTab(tab);
+    setShowTeacherPortal(true);
+  };
+
+  // Classroom Handlers
+  const handleAddStudent = (studentData: Omit<ClassroomStudent, 'id'>): boolean => {
+    const exists = classroomStudents.some(
+      (s) => s.className === studentData.className && s.studentCode.toUpperCase() === studentData.studentCode.toUpperCase()
+    );
+    if (exists) return false;
+
+    const newStudent: ClassroomStudent = {
+      ...studentData,
+      id: 'hs_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6)
+    };
+    const updated = [...classroomStudents, newStudent];
+    setClassroomStudents(updated);
+    StorageManager.saveClassroomStudents(updated);
+    return true;
+  };
+
+  const handleUpdateStudent = (updatedStudent: ClassroomStudent): boolean => {
+    const exists = classroomStudents.some(
+      (s) => s.id !== updatedStudent.id && s.className === updatedStudent.className && s.studentCode.toUpperCase() === updatedStudent.studentCode.toUpperCase()
+    );
+    if (exists) return false;
+
+    const updated = classroomStudents.map((s) => s.id === updatedStudent.id ? updatedStudent : s);
+    setClassroomStudents(updated);
+    StorageManager.saveClassroomStudents(updated);
+    return true;
+  };
+
+  const handleDeleteStudent = (id: string) => {
+    const updated = classroomStudents.filter((s) => s.id !== id);
+    setClassroomStudents(updated);
+    StorageManager.saveClassroomStudents(updated);
+  };
+
+  const handleBatchAddStudents = (names: string[], targetClass: string): number => {
+    const existingInClass = classroomStudents.filter((s) => s.className === targetClass);
+    let nextNum = existingInClass.length + 1;
+    const newItems: ClassroomStudent[] = [];
+
+    names.forEach((rawName, idx) => {
+      const cleanName = rawName.trim();
+      if (!cleanName) return;
+      const code = `HS${String(nextNum).padStart(2, '0')}`;
+      nextNum++;
+      const group = (idx % 4) + 1;
+      newItems.push({
+        id: 'hs_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substring(2, 6),
+        studentCode: code,
+        name: cleanName,
+        gender: idx % 2 === 0 ? 'Nam' : 'Nữ',
+        className: targetClass,
+        group,
+        meritPoints: 100
+      });
+    });
+
+    if (newItems.length > 0) {
+      const updated = [...classroomStudents, ...newItems];
+      setClassroomStudents(updated);
+      StorageManager.saveClassroomStudents(updated);
+    }
+    return newItems.length;
+  };
+
+  const handleAddClass = (className: string) => {
+    if (!classroomClasses.includes(className)) {
+      const updated = [...classroomClasses, className];
+      setClassroomClasses(updated);
+      StorageManager.saveClasses(updated);
+    }
+  };
+
+  const handleSaveAttendance = (record: AttendanceRecord): boolean => {
+    return StorageManager.saveAttendanceRecord(record);
+  };
+
+  const handleUpdateStudentPoints = (
+    studentId: string, 
+    newPoints: number, 
+    change: number, 
+    reason: string
+  ) => {
+    const target = classroomStudents.find((s) => s.id === studentId);
+    if (!target) return;
+
+    const updated = classroomStudents.map((s) => s.id === studentId ? { ...s, meritPoints: newPoints } : s);
+    setClassroomStudents(updated);
+    StorageManager.saveClassroomStudents(updated);
+
+    const historyItem: PointHistoryItem = {
+      id: 'pt_' + Date.now(),
+      studentId: target.id,
+      studentName: target.name,
+      className: target.className,
+      group: target.group,
+      change,
+      reason,
+      timestamp: new Date().toLocaleDateString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+    const newHist = [historyItem, ...pointHistory];
+    setPointHistory(newHist);
+    StorageManager.savePointHistory(newHist);
+  };
+
+  const handleUpdateGroupPoints = (groupNumber: number, change: number, reason: string) => {
+    const updated = classroomStudents.map((s) => {
+      if (s.className === currentClass && s.group === groupNumber) {
+        return { ...s, meritPoints: Math.max(0, s.meritPoints + change) };
+      }
+      return s;
+    });
+    setClassroomStudents(updated);
+    StorageManager.saveClassroomStudents(updated);
+
+    const historyItem: PointHistoryItem = {
+      id: 'pt_' + Date.now(),
+      studentId: `group_${groupNumber}`,
+      studentName: `Cả Tổ ${groupNumber}`,
+      className: currentClass,
+      group: groupNumber,
+      change,
+      reason,
+      timestamp: new Date().toLocaleDateString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+    const newHist = [historyItem, ...pointHistory];
+    setPointHistory(newHist);
+    StorageManager.savePointHistory(newHist);
+  };
+
+  const handleResetClassPoints = (targetClass: string) => {
+    const updated = classroomStudents.map((s) => {
+      if (s.className === targetClass) {
+        return { ...s, meritPoints: 100 };
+      }
+      return s;
+    });
+    setClassroomStudents(updated);
+    StorageManager.saveClassroomStudents(updated);
+  };
+
+  const handleSaveGroupResult = (result: SavedGroupResult): boolean => {
+    setSavedGroups((prev) => ({ ...prev, [result.className]: result }));
+    return StorageManager.saveGroupResult(result);
+  };
 
   // Update Student Profile
   const handleUpdateProfile = (name: string, className: string) => {
@@ -258,7 +435,7 @@ export default function App() {
         profile={profile}
         soundEnabled={soundEnabled}
         onToggleSound={() => setSoundEnabled((prev) => !prev)}
-        onOpenTeacher={() => setShowTeacherPortal(true)}
+        onOpenTeacher={(tab) => handleOpenTeacherPortal(tab || 'students')}
         onGoHome={() => setCurrentView(profile.name ? 'map' : 'start')}
         currentView={currentView}
       />
@@ -273,7 +450,7 @@ export default function App() {
             onUpdateProfile={handleUpdateProfile}
             onStart={() => setCurrentView('map')}
             onOpenInstructions={() => setShowInstructions(true)}
-            onOpenTeacher={() => setShowTeacherPortal(true)}
+            onOpenTeacher={(tab) => handleOpenTeacherPortal(tab || 'students')}
             soundEnabled={soundEnabled}
           />
         )}
@@ -347,11 +524,29 @@ export default function App() {
           StorageManager.saveHistory([]);
         }}
         soundEnabled={soundEnabled}
+        initialTab={teacherPortalInitialTab}
+        classroomStudents={classroomStudents}
+        classes={classroomClasses}
+        currentClass={currentClass}
+        pointHistory={pointHistory}
+        savedGroups={savedGroups}
+        onChangeClass={setCurrentClass}
+        onAddClass={handleAddClass}
+        onAddStudent={handleAddStudent}
+        onUpdateStudent={handleUpdateStudent}
+        onDeleteStudent={handleDeleteStudent}
+        onBatchAddStudents={handleBatchAddStudents}
+        getAttendanceRecord={StorageManager.getAttendanceRecord}
+        onSaveAttendanceRecord={handleSaveAttendance}
+        onUpdateStudentPoints={handleUpdateStudentPoints}
+        onUpdateGroupPoints={handleUpdateGroupPoints}
+        onResetClassPoints={handleResetClassPoints}
+        onSaveGroupResult={handleSaveGroupResult}
       />
 
       {/* Footer */}
-      <footer className="py-3 px-4 border-t border-slate-200/70 bg-white/70 text-center text-[11px] text-slate-500 font-medium">
-        Đấu Trường Ngữ Văn 6 • Chương trình GDPT 2018 (Kết nối tri thức với cuộc sống) • Phiên bản tương tác đa giác quan
+      <footer className="py-2.5 sm:py-3 px-3 sm:px-4 border-t border-slate-200/70 bg-white/70 text-center text-[10px] sm:text-[11px] text-slate-500 font-medium pb-16 sm:pb-3 pb-safe">
+        Đấu Trường Ngữ Văn 6 • GDPT 2018 (Kết nối tri thức với cuộc sống) • Tối ưu tương tác di động
       </footer>
     </div>
   );

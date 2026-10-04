@@ -138,3 +138,61 @@ export interface BadgeInfo {
   icon: string;
   criteria: string;
 }
+
+// ==========================================
+// CLASSROOM MANAGEMENT TYPES (Quản lý lớp học)
+// ==========================================
+
+export type AttendanceStatus = 'present' | 'absent_excused' | 'absent_unexcused' | 'late';
+
+export interface ClassroomStudent {
+  id: string;
+  studentCode: string; // e.g. "HS01"
+  name: string;
+  gender: 'Nam' | 'Nữ';
+  className: string; // e.g. "6A1", "6A2"
+  group: number; // Tổ 1, 2, 3, 4
+  meritPoints: number; // Điểm thi đua cá nhân (mặc định 100)
+  phone?: string;
+  notes?: string;
+}
+
+export interface AttendanceRecord {
+  date: string; // YYYY-MM-DD
+  className: string;
+  records: Record<string, AttendanceStatus>; // studentId -> status
+  notes?: Record<string, string>;
+  updatedAt: string;
+}
+
+export interface PointHistoryItem {
+  id: string;
+  studentId: string;
+  studentName: string;
+  className: string;
+  group: number;
+  change: number; // +5, -2, etc.
+  reason: string;
+  timestamp: string;
+}
+
+export interface SavedGroupMember {
+  id: string;
+  studentCode: string;
+  name: string;
+  gender: 'Nam' | 'Nữ';
+  group: number;
+}
+
+export interface SavedGroupResult {
+  id: string;
+  className: string;
+  createdAt: string;
+  mode: 'by_group_count' | 'by_member_count';
+  paramValue: number;
+  groups: {
+    groupIndex: number;
+    groupName: string;
+    members: SavedGroupMember[];
+  }[];
+}

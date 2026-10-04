@@ -17,21 +17,21 @@ export const Mascot: React.FC<MascotProps> = ({
   className = ''
 }) => {
   const sizeClasses = {
-    sm: 'w-16 h-16',
-    md: 'w-24 h-24',
-    lg: 'w-32 h-32'
+    sm: 'w-12 h-12 sm:w-16 sm:h-16',
+    md: 'w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24',
+    lg: 'w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32'
   }[size];
 
   // SVG Owl mascot "Cú Tri Thức"
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-2 sm:gap-3 ${className}`}>
       <motion.div
         animate={
           mood === 'happy' || mood === 'cheering'
-            ? { y: [0, -8, 0], rotate: [0, 4, -4, 0] }
+            ? { y: [0, -6, 0], rotate: [0, 3, -3, 0] }
             : mood === 'thinking'
             ? { rotate: [0, -3, 0] }
-            : { y: [0, -4, 0] }
+            : { y: [0, -3, 0] }
         }
         transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
         className={`relative flex-shrink-0 ${sizeClasses}`}
@@ -113,11 +113,11 @@ export const Mascot: React.FC<MascotProps> = ({
         <motion.div
           initial={{ opacity: 0, scale: 0.9, x: -6 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          className="relative max-w-sm rounded-2xl bg-white px-4 py-2.5 shadow-md border border-blue-100 text-slate-800 text-sm font-medium leading-relaxed"
+          className="relative flex-1 max-w-[240px] xs:max-w-xs sm:max-w-sm rounded-2xl bg-white px-3 py-2 sm:px-4 sm:py-2.5 shadow-md border border-blue-100 text-slate-800 text-xs sm:text-sm font-medium leading-relaxed"
         >
           {/* Arrow */}
-          <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-white drop-shadow-sm" />
-          <p>{message}</p>
+          <div className="absolute -left-2 top-3 sm:top-4 h-0 w-0 border-y-6 sm:border-y-8 border-y-transparent border-r-6 sm:border-r-8 border-r-white drop-shadow-sm" />
+          <p className="line-clamp-3 sm:line-clamp-none">{message}</p>
         </motion.div>
       )}
     </div>

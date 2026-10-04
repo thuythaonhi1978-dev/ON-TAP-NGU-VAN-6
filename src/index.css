@@ -1,1 +1,63 @@
 @import "tailwindcss";
+
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* Mobile & Touch Optimizations */
+html {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+}
+
+/* Touch targets & buttons */
+button, [role="button"], a {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Safe area padding utilities */
+.pt-safe {
+  padding-top: calc(var(--sat) + 0.5rem);
+}
+
+.pb-safe {
+  padding-bottom: calc(var(--sab) + 0.75rem);
+}
+
+.mb-safe {
+  margin-bottom: var(--sab);
+}
+
+/* Hide scrollbars for smooth touch swiping */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile interactive active feedback */
+.touch-active {
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+.touch-active:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}

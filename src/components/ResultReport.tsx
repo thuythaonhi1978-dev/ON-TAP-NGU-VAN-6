@@ -120,29 +120,29 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-8 pb-safe">
       {/* Top Banner & Celebration */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className={`rounded-3xl p-6 sm:p-8 bg-gradient-to-r ${evalInfo.color} shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6`}
+        className={`rounded-3xl p-4 sm:p-8 bg-gradient-to-r ${evalInfo.color} shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6`}
       >
-        <div className="space-y-2 text-center md:text-left z-10">
+        <div className="space-y-2 text-center md:text-left z-10 w-full">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs text-xs font-bold">
             <Trophy className="w-3.5 h-3.5 text-amber-300" />
             Báo Cáo Thành Tích Đấu Trường
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
             {evalInfo.label}
           </h2>
-          <p className="text-xs sm:text-sm font-medium opacity-90 max-w-md">
+          <p className="text-xs sm:text-sm font-medium opacity-90 max-w-md mx-auto md:mx-0">
             {evalInfo.desc}
           </p>
 
-          <div className="pt-2 flex flex-wrap gap-2 text-xs font-bold">
-            <span className="px-3 py-1 bg-white/20 rounded-xl">Học sinh: {result.studentName}</span>
-            <span className="px-3 py-1 bg-white/20 rounded-xl">Lớp: {result.className}</span>
+          <div className="pt-1.5 flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 text-xs font-bold">
+            <span className="px-2.5 sm:px-3 py-1 bg-white/20 rounded-xl">Học sinh: {result.studentName}</span>
+            <span className="px-2.5 sm:px-3 py-1 bg-white/20 rounded-xl">Lớp: {result.className}</span>
           </div>
         </div>
 
@@ -156,59 +156,59 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
       </motion.div>
 
       {/* Primary Metrics Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-2">
-            <Trophy className="w-5 h-5" />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-1 sm:mb-2">
+            <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Điểm</span>
-          <span className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{result.totalScore}đ</span>
+          <span className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Tổng Điểm</span>
+          <span className="text-xl sm:text-3xl font-black text-slate-900 mt-0.5">{result.totalScore}đ</span>
         </div>
 
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2">
-            <CheckCircle2 className="w-5 h-5" />
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-1 sm:mb-2">
+            <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Câu Đúng</span>
-          <span className="text-2xl sm:text-3xl font-black text-emerald-600 mt-1">{result.correctCount}/{result.totalQuestions}</span>
+          <span className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Câu Đúng</span>
+          <span className="text-xl sm:text-3xl font-black text-emerald-600 mt-0.5">{result.correctCount}/{result.totalQuestions}</span>
         </div>
 
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-2">
-            <Sparkles className="w-5 h-5" />
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-1 sm:mb-2">
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tỉ Lệ Đạt</span>
-          <span className="text-2xl sm:text-3xl font-black text-amber-600 mt-1">{result.percentage}%</span>
+          <span className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Tỉ Lệ Đạt</span>
+          <span className="text-xl sm:text-3xl font-black text-amber-600 mt-0.5">{result.percentage}%</span>
         </div>
 
-        <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-2">
-            <Clock className="w-5 h-5" />
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-slate-200 shadow-sm flex flex-col items-center text-center">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-1 sm:mb-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Thời Gian</span>
-          <span className="text-xl sm:text-2xl font-black text-purple-900 mt-1">
+          <span className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Thời Gian</span>
+          <span className="text-lg sm:text-2xl font-black text-purple-900 mt-0.5">
             {Math.floor(result.durationSeconds / 60)}p {result.durationSeconds % 60}s
           </span>
         </div>
       </div>
 
       {/* 4 Cognitive Levels Breakdown */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md space-y-4">
-        <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-          <Award className="w-5 h-5 text-indigo-600" />
-          Kết Quả Phân Hóa Theo Bốn Mức Độ Nhận Thức
+      <div className="bg-white rounded-3xl p-4 sm:p-8 border border-slate-200 shadow-md space-y-3 sm:space-y-4">
+        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+          <Award className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 flex-shrink-0" />
+          Kết Quả Theo Bốn Mức Độ Nhận Thức
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
           {Object.entries(result.levelBreakdown).map(([lvlKey, stats]) => {
             const lvl = lvlKey as keyof typeof COGNITIVE_LEVELS;
             const lvlConfig = COGNITIVE_LEVELS[lvl];
             const pct = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
 
             return (
-              <div key={lvl} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div key={lvl} className="p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5 sm:space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${lvlConfig.color}`}>
+                  <span className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-bold ${lvlConfig.color}`}>
                     {lvlConfig.name}
                   </span>
                   <span className="text-xs font-extrabold text-slate-800">
@@ -222,7 +222,7 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
                     style={{ width: `${pct}%` }}
                   />
                 </div>
-                <p className="text-[11px] text-slate-500 text-right font-semibold">{pct}% chính xác</p>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 text-right font-semibold">{pct}% chính xác</p>
               </div>
             );
           })}
@@ -230,11 +230,11 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
       </div>
 
       {/* Strengths & Needs Review Analysis */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {/* Strengths */}
-        <div className="p-5 rounded-3xl bg-emerald-50/70 border border-emerald-200 space-y-2">
-          <h4 className="font-bold text-emerald-900 flex items-center gap-2 text-sm">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+        <div className="p-4 sm:p-5 rounded-3xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+          <h4 className="font-bold text-emerald-900 flex items-center gap-2 text-xs sm:text-sm">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
             Nội dung em làm rất tốt
           </h4>
           {result.strengths.length > 0 ? (
@@ -249,9 +249,9 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
         </div>
 
         {/* Needs Review */}
-        <div className="p-5 rounded-3xl bg-amber-50/70 border border-amber-200 space-y-2">
-          <h4 className="font-bold text-amber-900 flex items-center gap-2 text-sm">
-            <Sparkles className="w-4 h-4 text-amber-600" />
+        <div className="p-4 sm:p-5 rounded-3xl bg-amber-50/70 border border-amber-200 space-y-2">
+          <h4 className="font-bold text-amber-900 flex items-center gap-2 text-xs sm:text-sm">
+            <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0" />
             Nội dung em cần ôn lại
           </h4>
           {result.needsReview.length > 0 ? (
@@ -268,10 +268,10 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
 
       {/* Review Wrong Answers Section */}
       {result.wrongAnswers.length > 0 && (
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <XCircle className="w-5 h-5 text-rose-500" />
+        <div className="bg-white rounded-3xl p-4 sm:p-8 border border-slate-200 shadow-md space-y-3 sm:space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <h3 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+              <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 flex-shrink-0" />
               Chi Tiết Các Câu Trả Lời Sai ({result.wrongAnswers.length} câu)
             </h3>
             <button
@@ -279,21 +279,21 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
                 SoundFX.playClick(soundEnabled);
                 onPracticeWrongOnly();
               }}
-              className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all touch-action-manipulation min-h-[40px]"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Luyện Lại Ngay Các Câu Này
             </button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {result.wrongAnswers.map((item, idx) => (
-              <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs sm:text-sm">
-                <div className="font-bold text-slate-900">
+              <div key={idx} className="p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+                <div className="font-bold text-slate-900 leading-snug">
                   Câu {idx + 1}: {item.question.prompt}
                 </div>
-                <div className="text-xs text-emerald-800 font-semibold bg-emerald-50 p-2.5 rounded-xl border border-emerald-200">
-                  <strong>Đáp án đúng & Giải thích: </strong>
+                <div className="text-xs text-emerald-800 font-semibold bg-emerald-50 p-2 sm:p-2.5 rounded-xl border border-emerald-200 leading-relaxed">
+                  <strong>Đáp án & Giải thích: </strong>
                   {item.question.explanation}
                 </div>
                 <div className="text-[11px] text-blue-700 font-bold">
@@ -306,13 +306,13 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
       )}
 
       {/* Actions Toolbar */}
-      <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
+      <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2.5 sm:gap-3">
         <button
           onClick={() => {
             SoundFX.playClick(soundEnabled);
             onPlayAgain();
           }}
-          className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm shadow-md active:scale-95 transition-all flex items-center gap-2"
+          className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-action-manipulation"
         >
           <RotateCcw className="w-4 h-4" />
           CHƠI LẠI LƯỢT MỚI
@@ -324,7 +324,7 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
               SoundFX.playClick(soundEnabled);
               onPracticeWrongOnly();
             }}
-            className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-sm shadow-md active:scale-95 transition-all flex items-center gap-2"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs sm:text-sm shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 min-h-[48px] touch-action-manipulation"
           >
             <RefreshCw className="w-4 h-4" />
             LUYỆN LẠI CÂU SAI
@@ -336,29 +336,31 @@ ${result.needsReview.map((n) => `- ${n}`).join('\n') || '- Không có, em làm r
             SoundFX.playClick(soundEnabled);
             onGoHome();
           }}
-          className="px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-sm transition-all flex items-center gap-2"
+          className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 min-h-[44px] touch-action-manipulation"
         >
           <Home className="w-4 h-4 text-slate-500" />
           VỀ TRANG CHỦ
         </button>
 
-        <button
-          onClick={handlePrint}
-          className="px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-all flex items-center gap-1.5"
-          title="In phiếu kết quả"
-        >
-          <Printer className="w-4 h-4" />
-          In Kết Quả
-        </button>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <button
+            onClick={handlePrint}
+            className="flex-1 sm:flex-initial px-4 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 min-h-[44px] touch-action-manipulation"
+            title="In phiếu kết quả"
+          >
+            <Printer className="w-4 h-4" />
+            In Kết Quả
+          </button>
 
-        <button
-          onClick={handleDownloadReport}
-          className="px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-all flex items-center gap-1.5"
-          title="Tải báo cáo về máy"
-        >
-          <Download className="w-4 h-4" />
-          Tải Báo Cáo
-        </button>
+          <button
+            onClick={handleDownloadReport}
+            className="flex-1 sm:flex-initial px-4 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 min-h-[44px] touch-action-manipulation"
+            title="Tải báo cáo về máy"
+          >
+            <Download className="w-4 h-4" />
+            Tải Báo Cáo
+          </button>
+        </div>
       </div>
     </div>
   );

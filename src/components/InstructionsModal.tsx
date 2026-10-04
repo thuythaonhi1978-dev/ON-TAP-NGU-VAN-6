@@ -11,33 +11,34 @@ export const InstructionsModal: React.FC<InstructionsModalProps> = ({ isOpen, on
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-3xl my-8 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+      <div className="relative w-full max-w-3xl my-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] max-h-[94dvh]">
         {/* Modal Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-white/20 rounded-xl">
-              <HelpCircle className="w-6 h-6 text-amber-300" />
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <div className="p-1.5 sm:p-2 bg-white/20 rounded-xl flex-shrink-0">
+              <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300" />
             </div>
-            <div>
-              <h2 className="text-lg sm:text-xl font-extrabold tracking-tight">
-                Hướng Dẫn Tham Gia Đấu Trường
+            <div className="min-w-0">
+              <h2 className="text-base sm:text-xl font-extrabold tracking-tight truncate">
+                Hướng Dẫn Luật Chơi
               </h2>
-              <p className="text-xs text-blue-100 font-medium">
-                Cẩm nang chinh phục tri thức Ngữ văn 6
+              <p className="text-[10px] sm:text-xs text-blue-100 font-medium truncate">
+                Cẩm nang chinh phục đấu trường Ngữ văn 6
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-colors"
+            className="min-w-[36px] min-h-[36px] p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-colors flex items-center justify-center touch-action-manipulation flex-shrink-0"
+            aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-6 text-slate-700 text-sm leading-relaxed">
+        <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 text-slate-700 text-xs sm:text-sm leading-relaxed">
           {/* Section 1: 4 Khu vực hành trình */}
           <div>
             <h3 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
@@ -175,10 +176,10 @@ export const InstructionsModal: React.FC<InstructionsModalProps> = ({ isOpen, on
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
           <button
             onClick={onClose}
-            className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 transition-all text-sm"
+            className="w-full sm:w-auto px-6 py-3 sm:py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold hover:shadow-lg active:scale-95 transition-all text-xs sm:text-sm min-h-[44px] touch-action-manipulation"
           >
             Đã Hiểu, Sẵn Sàng Khám Phá!
           </button>
